@@ -19,6 +19,10 @@ class CreateTransactionService {
   public execute({ title, value, type }: DataDTO): Transaction {
     const balance = this.transactionsRepository.getBalance();
 
+    if (!['income', 'outcome'].includes(type)) {
+      throw Error('Transaction type is not valid!');
+    }
+
     if (type === 'outcome' && value > balance.total) {
       throw Error('Deu ruim, não posso comprar isso!');
     } else {
